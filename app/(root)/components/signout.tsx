@@ -1,11 +1,10 @@
 "use client";
-import { signOut } from "next-auth/react";
+import { signOut } from "@/auth";
 import React, { useEffect } from "react";
 
 export const SignOut = () => {
  
   return <div>
-
     <button onClick={() => {
     signOut();
     }}>

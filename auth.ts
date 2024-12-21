@@ -69,4 +69,4 @@ adapter: PrismaAdapter(prisma),
 
 export default authOptions
 
-export const {auth, handlers, signIn,signOut } = authOptions
+export const {auth, handlers, signIn, signOut } = authOptions
