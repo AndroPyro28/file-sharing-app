@@ -39,7 +39,7 @@ model Links {
   userId        String
   expirationDate DateTime? // Optional expiration for temporary links
   isActive      Boolean   @default(true)
-  Files         Files[]
+  files         Files[]
 }
 
 model Users {
