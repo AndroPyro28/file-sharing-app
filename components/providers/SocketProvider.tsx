@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { io as ClientIO } from "socket.io-client";
@@ -25,10 +26,10 @@ export const SocketIoProvider: React.FC<React.PropsWithChildren> = ({
 
   useEffect(() => {
     const socketInstance = new (ClientIO as any)(
-      "",
+      "http://localhost:3000/",
       { path: "/api/socket/io", addTrailingSlash: false }
     );
-
+    console.log(socketInstance)
     socketInstance.on('connect', () => {
       console.log('connected')
         setIsConnected(true)

@@ -7,13 +7,22 @@ import { elysia } from "@/elysia/client";
 import {GetMessageType, GetMessageByIdType} from "@/elysia/services/message"
 import { useQueryProcessor } from "@/hooks/useTanstackQuery";
 import axios from "axios";
+import { useSocket } from "@/components/providers/SocketProvider";
+import { useEffect } from "react";
+import { useSampleSocket } from "@/hooks/use-sample-socket";
+
 export default function Home() {
   // const currentUser = await getCurrentUser()
   // const message = await elysia.api.message.index.get() as { data: GetMessageType, error:any, status:number}
+
+  useSampleSocket({chatKey:"hello", queryKey: ["hello"]})
+
   const message = useQueryProcessor<GetMessageType>({
-    url: `/message`,
+    url: `/comments`,
     key: ['message'],
   })
+
+
   const data = message.data
   if(message.isError && axios.isAxiosError(message.error)) {
     console.log(message.error?.response?.data)
