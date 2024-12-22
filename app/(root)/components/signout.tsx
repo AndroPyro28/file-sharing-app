@@ -5,7 +5,8 @@ export const SignOut = () => {
   return (
     <form
       action={async () => {
-        signOut({redirectTo:'/'});
+        "use server";
+        signOut({ redirectTo: "/" });
       }}
     >
       <button type="submit">Sign out</button>

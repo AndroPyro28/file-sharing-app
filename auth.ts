@@ -33,7 +33,7 @@ const authOptions = NextAuth({
           throw new Error("Invalid credentials. Please fill in all fields");
         }
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
           where: {
             email: credentials.email as string,
           },
@@ -43,14 +43,14 @@ const authOptions = NextAuth({
           throw new Error("Invalid credentials");
         }
         // hashPassword
-        const isCorrectPassword = await comparePassword(
-          credentials.password as string,
-          user.hashedPassword
-        );
+        // const isCorrectPassword = await comparePassword(
+        //   credentials.password as string,
+        //   user.hashedPassword
+        // );
 
-        if (!isCorrectPassword) {
-          throw new Error("Invalid credentials");
-        }
+        // if (!isCorrectPassword) {
+        //   throw new Error("Invalid credentials");
+        // }
 
         //   if (
         //     (credentials.type === "sms" && user.role === "STOCK_MANAGER") ||
