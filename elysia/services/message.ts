@@ -1,7 +1,18 @@
-class MessageService {
-  async create(body: any) {}
+// @ts-ignore
 
-  get = async () => {
+import prisma from "@/lib/prisma";
+
+// @ts-nocheck
+class MessageService {
+  async create(body: any) {
+    console.log(body)
+    return {
+      count: body.count
+    }
+
+  }
+
+  async get () {
     const isError = true;
     if (isError) {
       return Response.json(
@@ -12,13 +23,12 @@ class MessageService {
         { status: 400 }
       );
     }
-
     return {
       message: "Helo world"
     };
   };
 
-  getById = async (messageId: string) => {
+  async getById (messageId: string) {
     return messageId;
   };
 }

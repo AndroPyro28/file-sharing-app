@@ -15,8 +15,4 @@ export const messageController = new Elysia({ prefix: "/message" })
       params: t.Object({ message: t.String() }),
     }
   )
-  .post("/", ({ body }) => body, {
-    body: t.Object({
-      name: t.String(),
-    }),
-  });
+  .post("/", ({ body, messageService}) => messageService.create(body));
