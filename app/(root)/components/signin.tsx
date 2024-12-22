@@ -1,5 +1,5 @@
 import { signIn } from "@/auth";
-import React, { useEffect } from "react";
+import React from "react";
 
 export const SignIn = () => {
   return (

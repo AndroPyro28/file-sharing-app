@@ -4,8 +4,7 @@ import prisma from "@/lib/prisma";
 
 // @ts-nocheck
 class MessageService {
-  async create(body: any) {
-    console.log(body)
+  async create(body: {count: number}) {
     return {
       count: body.count
     }
@@ -38,6 +37,7 @@ export default MessageService;
 // types
 const messageService = new MessageService();
 export type GetMessageType = Awaited<ReturnType<typeof messageService.get>>;
+export type CreateMessageType = Awaited<ReturnType<typeof messageService.create>>;
 export type GetMessageByIdType = Awaited<
   ReturnType<typeof messageService.getById>
 >;

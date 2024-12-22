@@ -1,14 +1,9 @@
 "use client"
-import getCurrentUser from "@/actions/getCurrentUser";
-import SignIn from "./components/signin";
-import { redirect } from "next/navigation";
 import { Navbar } from "./components/navbar";
-import { elysia } from "@/elysia/client";
-import {GetMessageType, GetMessageByIdType} from "@/elysia/services/message"
-import { useMutateProcessor, useQueryProcessor } from "@/hooks/useTanstackQuery";
-import axios from "axios";
+import { useMutateProcessor } from "@/hooks/useTanstackQuery";
 import { useEffect } from "react";
 import { socket } from "@/lib/socket";
+import { CreateMessageType } from "@/elysia/services/message";
 export default function Home() {
 
 
@@ -24,7 +19,7 @@ export default function Home() {
   //   key: ['message'],
   // })
 
-  const add = useMutateProcessor<any, any>({
+  const add = useMutateProcessor<{count:number}, {count:number}>({
     url: '/message',
     key:["message"],
     method: "POST"
@@ -32,7 +27,7 @@ export default function Home() {
 
   const onClick = () => {
     add.mutate({count: 1}, {
-      onSuccess(data, variables, context) {
+      onSuccess(data) {
         socket.emit("hello", data.count)
       },
     })

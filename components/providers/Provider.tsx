@@ -3,7 +3,6 @@ import React from "react";
 import QueryProvider from "./QueryProvider";
 import ToastProvider from "./ToastProvider";
 // import { ThemeProvider } from "next-themes";
-import { SocketIoProvider } from "./SocketProvider";
 
 const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
