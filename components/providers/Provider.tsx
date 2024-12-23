@@ -15,11 +15,11 @@ const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
         enableSystem={true}
         storageKey="enrollment-system"
         > */}
-        {/* <SocketIoProvider> */}
+        <SocketIoProvider>
           <QueryProvider>
               {children}
           </QueryProvider>
-        {/* </SocketIoProvider> */}
+        </SocketIoProvider>
       {/* </ThemeProvider> */}
     </>
   );
