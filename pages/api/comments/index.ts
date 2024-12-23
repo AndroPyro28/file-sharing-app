@@ -1,5 +1,5 @@
 
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest } from "next";
 import { NextApiResponseServerIo } from "@/types";
 export default async function handler(
   req: NextApiRequest,
@@ -7,10 +7,7 @@ export default async function handler(
 ) {
  
   if (req.method === "GET") {
-    setTimeout(() => {
-      console.log('socket emitted')
       res.socket?.server?.io.emit("hello", 1);
-    }, 2000)
     return res.status(200).json({ message: "hello1" });
   } else {
     // Handle any other HTTP method
