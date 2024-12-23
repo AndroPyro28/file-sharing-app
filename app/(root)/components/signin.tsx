@@ -1,18 +1,16 @@
-import { signIn } from "@/auth";
+"use client"
 import React, { useEffect } from "react";
-
+import { signIn } from "next-auth/react";
 export const SignIn = () => {
+  useEffect(() => {
+    // signIn('google')
+  }, [])
   return (
-    <form
-      action={async () => {
-        "use server"
-        signIn("google", {
-          
-        });
-      }}
+    <button
+    onClick={() => { signIn('google') }}
     >
-      <button type="submit">Sign in as google</button>
-    </form>
+      Sign in as google
+    </button>
   );
 };
 

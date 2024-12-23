@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { TUploadSchema, uploadSchema } from "@/schema/upload";
 import { Textarea } from "@/components/ui/textarea";
 import { FolderPlus, PlusCircle } from "lucide-react";
+import SignIn from "./signin";
 export const UploadForm = () => {
   const form = useForm<TUploadSchema>({
     resolver: zodResolver(uploadSchema),
