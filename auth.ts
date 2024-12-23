@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "./lib/prisma";
 import NextAuth from "next-auth";
-import { comparePassword } from "./lib/argon";
+import { comparePassword } from "./lib/bcrypt";
 
 const authOptions = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -43,14 +43,14 @@ const authOptions = NextAuth({
           throw new Error("Invalid credentials");
         }
         // hashPassword
-        // const isCorrectPassword = await comparePassword(
-        //   credentials.password as string,
-        //   user.hashedPassword
-        // );
+        const isCorrectPassword = await comparePassword(
+          credentials.password as string,
+          user.hashedPassword
+        );
 
-        // if (!isCorrectPassword) {
-        //   throw new Error("Invalid credentials");
-        // }
+        if (!isCorrectPassword) {
+          throw new Error("Invalid credentials");
+        }
 
         //   if (
         //     (credentials.type === "sms" && user.role === "STOCK_MANAGER") ||
