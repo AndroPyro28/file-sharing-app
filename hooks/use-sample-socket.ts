@@ -1,3 +1,4 @@
+"use client"
 import { useSocket } from "@/components/providers/SocketProvider";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";

@@ -1,8 +1,6 @@
-"use client"
 // import getCurrentUser from "@/actions/getCurrentUser";
 // import SignIn from "./components/signin";
 // import { redirect } from "next/navigation";
-import { Navbar } from "./components/navbar";
 // import { elysia } from "@/elysia/client";
 // import {GetMessageType, GetMessageByIdType} from "@/elysia/services/message"
 // import { useQueryProcessor } from "@/hooks/useTanstackQuery";
@@ -10,18 +8,18 @@ import { Navbar } from "./components/navbar";
 // import { useSocket } from "@/components/providers/SocketProvider";
 // import { useEffect } from "react";
 import { useSampleSocket } from "@/hooks/use-sample-socket";
+import UploadForm from "./components/upload-form";
 
 export default function Home() {
   // const currentUser = await getCurrentUser()
   // const message = await elysia.api.message.index.get() as { data: GetMessageType, error:any, status:number}
 
-  useSampleSocket({chatKey:"hello", queryKey: ["hello"]})
+  // useSampleSocket({chatKey:"hello", queryKey: ["hello"]})
 
   // const message = useQueryProcessor<GetMessageType>({
   //   url: `/comments`,
   //   key: ['message'],
   // })
-
 
   // const data = message.data
   // if(message.isError && axios.isAxiosError(message.error)) {
@@ -32,8 +30,16 @@ export default function Home() {
   // }
   return (
     <div className="overflow-hidden">
-      <video src="bg3.mp4" autoPlay={true} muted loop={true} className="absolute w-auto min-w-full min-h-full z-1"></video>
-      <Navbar />
+      <UploadForm />
+
+      <section className="z-5 fixed text-[##333333] top-[30%] left-[35%] w-[600px] flex flex-col gap-y-5 ">
+        <h1 className="font-bold text-4xl text-shadow-custom">We Transfer Clone</h1>
+        <p className="font-semibold leading-8 text-shadow-custom">
+          Share files and folders effortlessly with We Transfer Clone—a secure,
+          fast, and user-friendly platform designed to make file sharing simple.
+          No hassles, no limits, just seamless transfers you can trust.
+        </p>
+      </section>
     </div>
   );
 }
