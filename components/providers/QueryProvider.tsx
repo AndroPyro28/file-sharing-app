@@ -7,7 +7,7 @@ function QueryProvider({ children }: React.PropsWithChildren) {
   const client = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 60 ,
         retry: 2, // you can true, false, or number
       },
     },
