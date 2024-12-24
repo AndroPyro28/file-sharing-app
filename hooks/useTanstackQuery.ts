@@ -6,7 +6,7 @@ import qs from "query-string";
 const controller = new AbortController();
 
 export const apiClient = axios.create({
-  baseURL: `http://localhost:3000/api`,
+  baseURL: `${process.env.NEXT_PUBLIC_APP_URL}/api`,
   headers: { "Content-type": "application/json" },
 });
 

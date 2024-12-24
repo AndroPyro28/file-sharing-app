@@ -10,6 +10,7 @@ import SignIn from "./components/signin";
 import { useSampleSocket } from "@/hooks/use-sample-socket";
 import UploadForm from "./components/upload-form";
 import SignOut from "./components/signout";
+// import { TGetUser } from "@/server/controller/user";
 
 export default function Home() {
   // const currentUser = await getCurrentUser()
@@ -17,10 +18,12 @@ export default function Home() {
 
   // useSampleSocket({chatKey:"hello", queryKey: ["hello"]})
 
-  // const message = useQueryProcessor<GetMessageType>({
-  //   url: `/comments`,
-  //   key: ['message'],
-  // })
+//   const message = useQueryProcessor<TGetUser>({
+//     url: `/comments`,
+//     key: ['message'],
+//   })
+
+// const data = message.data
 
   // const data = message.data
   // if(message.isError && axios.isAxiosError(message.error)) {
