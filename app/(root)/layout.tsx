@@ -7,14 +7,14 @@ export default function Layout({
 }>) {
   return (
     <main>
-      {/* <video
+      <video
         src="bg3.mp4"
         autoPlay={true}
         muted
         loop={true}
         className="fixed  min-w-full min-h-full z-1"
       ></video>
-      <Navbar /> */}
+      <Navbar />
       {children}
     </main>
   );

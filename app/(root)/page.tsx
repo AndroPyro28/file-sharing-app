@@ -9,6 +9,7 @@ import SignIn from "./components/signin";
 // import { useEffect } from "react";
 import { useSampleSocket } from "@/hooks/use-sample-socket";
 import UploadForm from "./components/upload-form";
+import SignOut from "./components/signout";
 
 export default function Home() {
   // const currentUser = await getCurrentUser()
@@ -32,6 +33,7 @@ export default function Home() {
     <div className="overflow-hidden">
       <UploadForm />
       <SignIn />
+      <SignOut />
       <section className="z-5 fixed text-[##333333] top-[30%] left-[35%] w-[600px] flex flex-col gap-y-5 ">
         <h1 className="font-bold text-4xl text-shadow-custom">We Transfer Clone</h1>
         <p className="font-semibold leading-8 text-shadow-custom">
