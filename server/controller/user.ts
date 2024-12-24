@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 
 const usersRoute = new Hono()
 
-usersRoute.get('/', (ctx) => {
+.get('/', (ctx) => {
     return ctx.json({
         user: 1
     })
