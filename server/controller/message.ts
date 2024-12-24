@@ -1,28 +1,24 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { authHandler, verifyAuth, getAuthUser } from '@hono/auth-js'
+import { authHandler, verifyAuth, getAuthUser } from "@hono/auth-js";
 import prisma from "@/lib/prisma";
 const messagesRoute = new Hono();
 
-messagesRoute.get(
-  "/", verifyAuth(), async (ctx) => {
+messagesRoute.get("/", verifyAuth(), async (ctx) => {
+  // fix prisma
+  const users = await prisma.user.findMany();
 
-    // fix prisma
-    const users = await prisma.user.findMany()
-
-    return ctx.json(
-      {
-        count: 2,
-        users: users.length
-      },
-      {
-        status: 200,
-      }
-    );
-  }
-);
-
+  return ctx.json(
+    {
+      count: 2,
+      users: users.length,
+    },
+    {
+      status: 200,
+    }
+  );
+});
 
 messagesRoute.post(
   "/",

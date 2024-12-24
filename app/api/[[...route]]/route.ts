@@ -6,7 +6,8 @@ import Google from '@auth/core/providers/google'
 import Credentials from '@auth/core/providers/credentials'
 import { comparePassword } from '@/lib/bcrypt'
 import prisma from "@/lib/prisma";
-export const runtime = 'edge'
+
+export const runtime = 'nodejs'
 
 const app = new Hono()
 
