@@ -6,6 +6,8 @@
 
 generator client {
   provider = "prisma-client-js"
+  // engineType = "binary"
+  // previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -82,7 +84,7 @@ model Profile {
 
 model Account {
   id                String  @id @default(cuid())
-  userId            String
+  userId            String  @unique
   type              String
   provider          String
   providerAccountId String
@@ -94,19 +96,24 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
+// Necessary for Next auth
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String
+  userId       String   @unique
   expires      DateTime
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
+// Necessary for Next auth
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -114,3 +121,5 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+// Define the DirectMessage model

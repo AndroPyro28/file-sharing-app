@@ -4,6 +4,7 @@ import QueryProvider from "./QueryProvider";
 import ToastProvider from "./ToastProvider";
 // import { ThemeProvider } from "next-themes";
 import { SocketIoProvider } from "./SocketProvider";
+import SessionProvider from "./SessionProvider";
 
 const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
@@ -17,7 +18,9 @@ const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
         > */}
         <SocketIoProvider>
           <QueryProvider>
+            <SessionProvider>
               {children}
+            </SessionProvider>
           </QueryProvider>
         </SocketIoProvider>
       {/* </ThemeProvider> */}
