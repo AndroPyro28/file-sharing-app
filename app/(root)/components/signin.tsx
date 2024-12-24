@@ -1,17 +1,14 @@
-"use client"
-import React, { useEffect } from "react";
+"use client";
 import { signIn } from "next-auth/react";
+import React, { useEffect } from "react";
 export const SignIn = () => {
-  useEffect(() => {
-    // signIn('google')
-  }, [])
-  return (
-    <button
-    onClick={() => { signIn('google') }}
-    >
-      Sign in as google
+ 
+  return <div>
+    <button onClick={() => {
+    signIn("google");
+    }}>
+        Sign in as google
     </button>
-  );
+  </div>;
 };
-
-export default SignIn;
+export default SignIn

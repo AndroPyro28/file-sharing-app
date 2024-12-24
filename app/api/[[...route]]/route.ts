@@ -1,4 +1,4 @@
-import server from '@/server'
+import server from '@/server/server'
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
 

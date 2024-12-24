@@ -1,6 +1,7 @@
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaAdapter } from '@auth/prisma-adapter';
 import prisma from "./lib/prisma";
 import NextAuth from "next-auth";
 import { comparePassword } from "./lib/bcrypt";
@@ -33,30 +34,30 @@ const authOptions = NextAuth({
           throw new Error("Invalid credentials. Please fill in all fields");
         }
 
-        const user = await prisma.users.findUnique({
-          where: {
-            email: credentials.email as string,
-          },
-        });
+        // const user = await prisma.users.findUnique({
+        //   where: {
+        //     email: credentials.email as string,
+        //   },
+        // });
 
-        if (!user || !user?.hashedPassword) {
-          throw new Error("Invalid credentials");
-        }
-        // hashPassword
-        const isCorrectPassword = await comparePassword(
-          credentials.password as string,
-          user.hashedPassword
-        );
+        // if (!user || !user?.hashedPassword) {
+        //   throw new Error("Invalid credentials");
+        // }
+        // // hashPassword
+        // const isCorrectPassword = await comparePassword(
+        //   credentials.password as string,
+        //   user.hashedPassword
+        // );
 
-        if (!isCorrectPassword) {
-          throw new Error("Invalid credentials");
-        }
+        // if (!isCorrectPassword) {
+        //   throw new Error("Invalid credentials");
+        // }
 
         //   if (
         //     (credentials.type === "sms" && user.role === "STOCK_MANAGER") ||
         //     (credentials.type === "mediwise" && user.role !== "STOCK_MANAGER")
         //   ) {
-        return user;
+        return {};
         //   }
 
         // return { ...user, role: user.role.toString() };

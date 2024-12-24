@@ -6,6 +6,8 @@
 
 generator client {
   provider = "prisma-client-js"
+  // engineType = "library"
+  // previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -19,7 +21,7 @@ model Files {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 
   link      Links    @relation(fields: [linkId], references: [id], onDelete: Cascade)
@@ -35,14 +37,14 @@ model Links {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   url           String   @db.Text
-  user          Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
   expirationDate DateTime? // Optional expiration for temporary links
   isActive      Boolean   @default(true)
   files         Files[]
 }
 
-model Users {
+model User {
   id               String    @id @default(cuid())
   isArchived       Boolean   @default(false)
   name             String?
@@ -74,7 +76,7 @@ model Profile {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  user       Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @unique
 
    @@index([userId])
@@ -82,7 +84,7 @@ model Profile {
 
 model Account {
   id                String  @id @default(cuid())
-  userId            String
+  userId            String  @unique
   type              String
   provider          String
   providerAccountId String
@@ -94,19 +96,24 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user              Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
+// Necessary for Next auth
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String
+  userId       String   @unique
   expires      DateTime
-  user         Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
+// Necessary for Next auth
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -114,3 +121,5 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+// Define the DirectMessage model
