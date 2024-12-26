@@ -1,7 +1,8 @@
 import { client } from "@/lib/hono";
 import messagesRoute from "@/server/controller/message";
 import { ExtractResponse } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {InferResponseType} from "hono"
 
 export const useGetMessages = useQuery({
     queryKey: ['messages'],

@@ -18,10 +18,10 @@ export default function Home() {
 
   // useSampleSocket({chatKey:"hello", queryKey: ["hello"]})
 
-//   const message = useQueryProcessor<TGetUser>({
-//     url: `/comments`,
-//     key: ['message'],
-//   })
+  // const message = useQueryProcessor<TGetUser['response']>({
+  //   url: `/comments`,
+  //   key: ['message'],
+  // })
 
 // const data = message.data
 

@@ -1,6 +1,8 @@
 import { ExtractResponse } from '@/types';
-import { Hono } from 'hono'
+import { zValidator } from '@hono/zod-validator';
+import { Hono, InferRequestType, InferResponseType } from 'hono'
 import { hc } from 'hono/client';
+import { z } from 'zod';
 
 const usersRoute = new Hono()
 
@@ -10,7 +12,19 @@ const usersRoute = new Hono()
     })
 })
 
-.post('/', (ctx) => {
+.post('/',zValidator(
+    "json",
+    z.object({
+      name: z.string().min(1, "required"),
+    })
+  ),
+  zValidator(
+    "param",
+    z.object({
+      name: z.string().min(1, "required"),
+    })
+  )
+  , (ctx) => {
     return ctx.json({
         success: true
     })
@@ -20,7 +34,14 @@ const usersRoute = new Hono()
 export type TUserRoutes = typeof usersRoute;
 export const userClient = hc<TUserRoutes>('/api/users')
 
-export type TGetUser = ExtractResponse<Awaited<ReturnType<typeof userClient.index.$get>>>
-export type TCreateUser = ExtractResponse<Awaited<ReturnType<typeof userClient.index.$post>>>
+export type TGetUser = {
+    response: InferResponseType<typeof userClient.index.$get>;
+    request: InferRequestType<typeof userClient.index.$get>;
+}
+
+export type TCreateUser = {
+    response: InferResponseType<typeof userClient.index.$post>;
+    request: InferRequestType<typeof userClient.index.$post>['json'];
+}
 
 export default usersRoute
