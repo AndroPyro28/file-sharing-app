@@ -16,32 +16,41 @@ datasource db {
 }
 
 model Files {
-  id        String   @id @default(cuid())
-  imageId   String
+  id      String @id @default(cuid())
+  imageId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 
-  link      Links    @relation(fields: [linkId], references: [id], onDelete: Cascade)
-  linkId    String
+  link   Links  @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  linkId String
 
-  filename  String
-  filetype  String
-  size      Int      // Size in bytes
+  filename String
+  filetype String
+  size     Int // Size in bytes
+}
+
+model Receiver {
+  id     String @id @default(cuid())
+  email  String @db.Text
+  linkId String
+  link   Links  @relation(fields: [linkId], references: [id], onDelete: Cascade)
 }
 
 model Links {
-  id            String   @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  url           String   @db.Text
-  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String
+  id             String     @id @default(cuid())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  url            String     @db.Text
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email          String     @db.Text
+  userId         String
   expirationDate DateTime? // Optional expiration for temporary links
-  isActive      Boolean   @default(true)
-  files         Files[]
+  isActive       Boolean    @default(true)
+  files          Files[]
+  receivers      Receiver[]
 }
 
 model User {
@@ -57,11 +66,11 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
-  accounts         Account[]
-  sessions         Session[]
-  profile          Profile?
-  links            Links[]
-  files            Files[]
+  accounts Account[]
+  sessions Session[]
+  profile  Profile?
+  links    Links[]
+  files    Files[]
 
   @@index([email])
 }
@@ -76,10 +85,10 @@ model Profile {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String   @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
 
-   @@index([userId])
+  @@index([userId])
 }
 
 model Account {

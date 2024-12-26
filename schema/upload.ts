@@ -25,6 +25,5 @@ export const FileSchema = z
     message: z.string().min(2, {message: "Message is required"}),
     files: z.array(FileSchema)
   });
-  
 
   export type TUploadSchema = z.infer<typeof uploadSchema>

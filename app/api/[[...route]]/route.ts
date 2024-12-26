@@ -10,12 +10,11 @@ import Google from "@auth/core/providers/google";
 import Credentials from "@auth/core/providers/credentials";
 import { comparePassword } from "@/lib/bcrypt";
 import prisma from "@/lib/prisma";
-import messagesRoute from "@/server/controller/message";
-import usersRoute from "@/server/controller/user";
 import { hc } from 'hono/client'
+import upload from "@/server/controller/upload";
 export const runtime = "nodejs";
 
-const app = new Hono();
+const app = new Hono().basePath('/api');
 
 app.use(
   "*",
@@ -85,11 +84,12 @@ app.use(
 
 app.use("/api/auth/*", authHandler());
 
-app.use("/api/*", verifyAuth());
+// app.use("/api/*", verifyAuth());
 
 const routes = app
-  .route("/messages", messagesRoute)
-  .route("/users", usersRoute)
+  // .route("/messages", messagesRoute)
+  // .route("/users", usersRoute)
+  .route('/upload', upload)
 
 export type AppType = typeof routes;
 
