@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { TUploadSchema, uploadSchema } from "@/schema/upload";
 import { Textarea } from "@/components/ui/textarea";
 import { FolderPlus, PlusCircle } from "lucide-react";
-import SignIn from "./signin";
 export const UploadForm = () => {
   const form = useForm<TUploadSchema>({
     resolver: zodResolver(uploadSchema),
@@ -30,6 +29,9 @@ export const UploadForm = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+  form.watch()
+
+  // console.log(form.getValues())
 
   return (
     <Form {...form}>
@@ -38,6 +40,26 @@ export const UploadForm = () => {
         className=" min-w-[300px] w-[18%] bg-[#FFFFFF] flex flex-col p-5 rounded-xl space-y-8 z-5 fixed top-[25%] left-[10%]"
       >
         <div className="flex justify-evenly gap-x-5">
+        <input type="file" id="" multiple onChange={async (e) => {
+          const files = e.target.files;
+
+          if(files && files?.length > 0 ) {
+            if(e.target.files){
+
+              let filesContainer = [];
+
+              for (
+                let index = 0;
+                index < files.length;
+                index++
+              ) {
+                filesContainer.push(files[index] as File)
+              }
+
+              form.setValue("files", filesContainer)
+            }
+          }
+        }} />
           <Button size={"icon"} type="button" className="flex flex-col -space-y-1  w-full bg-[#E0EAFF] hover:bg-[#C4D6FF]">
             <PlusCircle className=" text-white fill-blue-500 size-24" />
             {/* <span className="text-sm text-black">Add Files</span> */}
@@ -108,7 +130,6 @@ export const UploadForm = () => {
                   <Input
                     //   disabled={isLoading}
                     className="focus-visible:ring-0 focus-visible:ring-offset-0 border-l-0 border-t-0 border-x-0 hover:border-blue-400 transition-all"
-                    type="email"
                     placeholder={`Add a title (e.g., Project Files)`}
                     {...field}
                   />

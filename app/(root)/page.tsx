@@ -35,8 +35,8 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       <UploadForm />
-      {/* <SignIn />
-      <SignOut /> */}
+       {/* <SignIn /> */}
+      {/* <SignOut />  */}
       <section className="z-5 fixed text-[##333333] top-[30%] left-[35%] w-[600px] flex flex-col gap-y-5 ">
         <h1 className="font-bold text-4xl text-shadow-custom">We Transfer Clone</h1>
         <p className="font-semibold leading-8 text-shadow-custom">

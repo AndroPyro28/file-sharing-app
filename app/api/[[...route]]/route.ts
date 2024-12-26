@@ -14,7 +14,7 @@ import { hc } from 'hono/client'
 import upload from "@/server/controller/upload";
 export const runtime = "nodejs";
 
-const app = new Hono().basePath('/api');
+const app = new Hono()
 
 app.use(
   "*",
@@ -86,10 +86,10 @@ app.use("/api/auth/*", authHandler());
 
 // app.use("/api/*", verifyAuth());
 
-const routes = app
+const routes = app.basePath('/api')
+.route('/upload', upload)
   // .route("/messages", messagesRoute)
   // .route("/users", usersRoute)
-  .route('/upload', upload)
 
 export type AppType = typeof routes;
 

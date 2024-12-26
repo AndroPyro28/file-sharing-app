@@ -14,10 +14,11 @@ export const FileSchema = z
 
   export const uploadSchema = z.object({
     emailTos: z.array(
-      z.string().email().min(2, {
-        message: "Username must be at least 2 characters.",
-      })
-    ),
+      z.string().email()
+      // .min(2, {
+      //   message: "Username must be at least 2 characters.",
+      // })
+    ).min(0),
     yourEmail: z.string().email().min(2, {
       message: "Username must be at least 2 characters.",
     }),
