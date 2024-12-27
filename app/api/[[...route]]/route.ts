@@ -12,6 +12,7 @@ import { comparePassword } from "@/lib/bcrypt";
 import prisma from "@/lib/prisma";
 import { hc } from 'hono/client'
 import upload from "@/server/controller/upload";
+import auth from "@/server/controller/auth";
 export const runtime = "nodejs";
 
 const app = new Hono()
@@ -88,6 +89,7 @@ app.use("/api/auth/*", authHandler());
 
 const routes = app.basePath('/api')
 .route('/upload', upload)
+.route("/auth-user", auth)
   // .route("/messages", messagesRoute)
   // .route("/users", usersRoute)
 

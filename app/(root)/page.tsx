@@ -1,4 +1,4 @@
-// import getCurrentUser from "@/actions/getCurrentUser";
+import getCurrentUser from "@/actions/getCurrentUser";
 import SignIn from "./components/signin";
 // import { redirect } from "next/navigation";
 // import { elysia } from "@/elysia/client";
@@ -12,10 +12,11 @@ import UploadForm from "./components/upload-form";
 import SignOut from "./components/signout";
 // import { TGetUser } from "@/server/controller/user";
 
-export default function Home() {
-  // const currentUser = await getCurrentUser()
+export default async function Home() {
+  const currentUser = await getCurrentUser()
   // const message = await elysia.api.message.index.get() as { data: GetMessageType, error:any, status:number}
 
+  console.log(currentUser)
   // useSampleSocket({chatKey:"hello", queryKey: ["hello"]})
 
   // const message = useQueryProcessor<TGetUser['response']>({

@@ -1,41 +1,24 @@
 import prisma from "@/lib/prisma";
 import { auth } from "../auth";
-export async function getSession() {
-  return await auth()
-}
+import { authClient } from "@/server/controller/auth";
+import { client } from "@/lib/hono";
+// export async function getSession() {
+//   return await auth()
+// }
 
 export type GetCurrentUserType = Awaited<ReturnType<typeof getCurrentUser>>;
 export default async function getCurrentUser() {
   try {
-    const session = await getSession();
-    if (!session || !session?.user?.email) {
-      return null;
+    const res = await client.api["auth-user"].me.$get()
+    if(!res.ok) {
+      throw new Error("User Not Found")
     }
 
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session.user.email,
-      },
-      include: {
-        profile: {
-          include: {
-          },
-        },
-      },
-    });
+    const data = await res.json()
 
-    if (!currentUser) {
-      return null;
-    }
-
-    const { hashedPassword, ...props } = currentUser;
-
-    return {
-      ...props,
-      createdAt: currentUser.createdAt.toISOString(),
-      updatedAt: currentUser.updatedAt.toISOString(),
-      emailVerified: currentUser.emailVerified?.toISOString() || null,
-    };
+    console.log("data", data)
+    return data;
+    
   } catch (error: any) {
     return null;
   }
