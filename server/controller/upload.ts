@@ -1,3 +1,6 @@
+// controller/upload.ts
+
+
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
@@ -21,12 +24,15 @@ const upload = new Hono()
 
     const uploads = await Promise.all(
       files.map(async (file) => {
-        // const buffer = await file.arrayBuffer();
         const buffer = Buffer.from(await file.arrayBuffer());
         const imageId = createId();
         const mimetype = file.type;
-        await uploadFile(buffer + "", imageId, mimetype);
-
+        try {
+          await uploadFile(buffer, imageId+"_"+file.name, mimetype);
+        } catch (error) {
+          console.error(`Error uploading file to S3: ${file.name}`, error);
+          throw new Error("Failed to upload file to storage");
+        }
         return {
           imageId,
           mimetype,
@@ -62,6 +68,14 @@ const upload = new Hono()
         },
       },
     });
+
+    if(!link || !link.id) {
+      return c.json({
+        message: "Something went wrong"
+      }, {
+        status: 400
+      })
+    }
 
     return c.json(
       {
