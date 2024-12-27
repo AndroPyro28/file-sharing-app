@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,60 +18,116 @@ import { Input } from "@/components/ui/input";
 import { TUploadSchema, uploadSchema } from "@/schema/upload";
 import { Textarea } from "@/components/ui/textarea";
 import { FolderPlus, PlusCircle } from "lucide-react";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 export const UploadForm = () => {
   const form = useForm<TUploadSchema>({
     resolver: zodResolver(uploadSchema),
-    defaultValues: {},
+    defaultValues: {
+      emailTos: [],
+      files: [],
+      message: "",
+      title: "",
+      yourEmail: "",
+    },
   });
+  const [value, setValue] = useState("");
+
+  const clearInput = () => {
+    setValue("");
+  };
 
   function onSubmit(values: TUploadSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    console.log("values", values);
   }
-  form.watch()
 
-  // console.log(form.getValues())
-
+  const onClickTriggerInput = () => {
+    if (fileInputRef?.current) {
+      fileInputRef?.current?.click();
+    }
+  };
+  console.log(form.formState.errors)
+  const fileInputRef = useRef<HTMLInputElement>(null);
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className=" min-w-[300px] w-[18%] bg-[#FFFFFF] flex flex-col p-5 rounded-xl space-y-8 z-5 fixed top-[25%] left-[10%]"
       >
-        <div className="flex justify-evenly gap-x-5">
-        <input type="file" id="" multiple onChange={async (e) => {
-          const files = e.target.files;
 
-          if(files && files?.length > 0 ) {
-            if(e.target.files){
+        <div className="flex flex-col items-center w-full gap-y-3">
+        <div className="flex justify-evenly gap-x-5 w-full">
+          <input
+            type="file"
+            id="file"
+            className="hidden"
+            multiple
+            ref={fileInputRef}
+            onChange={async (e) => {
+              const files = e.target.files;
 
-              let filesContainer = [];
+              if (files && files?.length > 0) {
+                if (e.target.files) {
+                  let filesContainer = [];
 
-              for (
-                let index = 0;
-                index < files.length;
-                index++
-              ) {
-                filesContainer.push(files[index] as File)
+                  for (let index = 0; index < files.length; index++) {
+                    filesContainer.push(files[index] as File);
+                  }
+
+                  form.setValue("files", filesContainer);
+                }
               }
+            }}
+          />
 
-              form.setValue("files", filesContainer)
-            }
-          }
-        }} />
-          <Button size={"icon"} type="button" className="flex flex-col -space-y-1  w-full bg-[#E0EAFF] hover:bg-[#C4D6FF]">
+          <Button
+            size={"icon"}
+            type="button"
+            className="flex flex-col -space-y-1  w-full bg-[#E0EAFF] hover:bg-[#C4D6FF]"
+            onClick={onClickTriggerInput}
+          >
             <PlusCircle className=" text-white fill-blue-500 size-24" />
             {/* <span className="text-sm text-black">Add Files</span> */}
           </Button>
-          <Button size={"icon"} type="button" className="flex flex-col -space-y-1  w-full bg-[#E0EAFF] hover:bg-[#C4D6FF]">
-            <FolderPlus className=" text-white  fill-blue-500 size-24"/>
-            {/* <span className="text-sm text-black">Add Folders</span> */}
+
+          <Button
+            size={"icon"}
+            type="button"
+            className="flex flex-col -space-y-1  w-full bg-[#E0EAFF] hover:bg-[#C4D6FF]"
+            onClick={onClickTriggerInput}
+          >
+            <FolderPlus className=" text-white  fill-blue-500 size-24" />
           </Button>
+        </div>
+        <span className="text-red-500 text-sm">
+            {form.formState.errors.files?.message}
+          </span>
         </div>
 
         <div className="flex flex-col gap-y-5">
-          <div>{/* display emails to send */}</div>
+          <div>
+            {form.watch("emailTos").map((email, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between bg-gray-100 p-2 rounded-md"
+              >
+                <span className="text-sm text-gray-800">{email}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updatedEmails = form
+                      .getValues("emailTos")
+                      .filter((_, i) => i !== index);
+                    form.setValue("emailTos", updatedEmails);
+                  }}
+                  className="text-red-500 hover:text-red-700 font-bold"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
 
           <FormField
             control={form.control}
@@ -83,11 +139,27 @@ export const UploadForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    //   disabled={isLoading}
-                    className="focus-visible:ring-0 focus-visible:ring-offset-0 border-t-0 border-x-0 hover:border-blue-400 transition-all"
                     type="email"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        const target = e.target as HTMLInputElement;
+                        const emailRegex =
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                        const validateEmail = (email: string): boolean =>
+                          emailRegex.test(email);
+                        if (validateEmail(target.value)) {
+                          const emails = form.getValues("emailTos");
+                          emails.push(target.value);
+                          form.setValue("emailTos", emails);
+                          clearInput();
+                        }
+                      }
+                    }}
+                    className="focus-visible:ring-0 focus-visible:ring-offset-0 border-t-0 border-x-0 hover:border-blue-400 transition-all"
                     placeholder={`Enter recipient's email (e.g., example@domain.com)`}
-                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
@@ -154,7 +226,6 @@ export const UploadForm = () => {
                     className="focus-visible:ring-0 focus-visible:ring-offset-0 border-l-0 border-t-0 border-x-0 resize-none hover:border-blue-400 transition-all"
                     placeholder="Type your message here."
                     {...field}
-                    
                   />
                 </FormControl>
 
