@@ -8,20 +8,26 @@ import { uploadSchema } from "@/schema/upload";
 import { uploadFile } from "@/lib/s3";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "@/lib/prisma";
-import { verifyAuth } from "@hono/auth-js";
+import { verifyAuth, getAuthUser, AuthUser,  } from "@hono/auth-js";
 import { hc, InferRequestType, InferResponseType } from "hono/client";
+import { authMiddleware, } from "../middleware/auth";
 
-const upload = new Hono()
+type Variables = {
+  user: any
+}
 
+const upload = new Hono<{Variables: Variables}>()
+.use("*", authMiddleware)
 .post(
   "/",
   verifyAuth(),
+  authMiddleware,
   zValidator("form", uploadSchema),
   async (c) => {
     const { emailTos, message, title, yourEmail } = c.req.valid("form");
+    console.log("form", c.req.valid("form"))
     const { files } = c.req.valid("form");
-    const user = c.get("authUser");
-
+    const user = c.get('user')
     const uploads = await Promise.all(
       files.map(async (file) => {
         const buffer = Buffer.from(await file.arrayBuffer());
@@ -41,7 +47,9 @@ const upload = new Hono()
       })
     );
 
-    const userId = user.user?.id! as string;
+
+    const userId = user?.id! as string;
+    console.log("userId", user)
     const id = createId();
     const link = await prisma.links.create({
       data: {

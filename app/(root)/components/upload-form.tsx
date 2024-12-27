@@ -12,13 +12,15 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Input } from "@/components/ui/input";
 import { TUploadSchema, uploadSchema } from "@/schema/upload";
 import { Textarea } from "@/components/ui/textarea";
 import { FolderPlus, PlusCircle } from "lucide-react";
-import { loadGetInitialProps } from "next/dist/shared/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { apiClient } from "@/hooks/useTanstackQuery";
+
 export const UploadForm = () => {
   const form = useForm<TUploadSchema>({
     resolver: zodResolver(uploadSchema),
@@ -36,10 +38,31 @@ export const UploadForm = () => {
     setValue("");
   };
 
-  function onSubmit(values: TUploadSchema) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log("values", values);
+  async function onSubmit(values: TUploadSchema) {
+    const formData = new FormData();
+    formData.append("yourEmail", values.yourEmail);
+    formData.append("title", values.title);
+    formData.append("message", values.message);
+  
+    // Ensure 'files' is always treated as an array, even if there's only one file
+    Array.from(values.files).forEach((file) => {
+      formData.append("files", file); // Same key for all files
+    });
+  
+    // Ensure 'emailTos' is always treated as an array, even if there's only one email
+    // If 'emailTos' is not an array, make it an array
+    const emailTosArray = Array.isArray(values.emailTos) ? values.emailTos : [values.emailTos];
+    
+    emailTosArray.forEach((email) => {
+      formData.append("emailTos", email); // Append each email, treating it as an array
+    });
+  
+    const response = await apiClient.post("/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data; // This assumes the API response contains `{ link: string }`
   }
 
   const onClickTriggerInput = () => {
@@ -47,8 +70,10 @@ export const UploadForm = () => {
       fileInputRef?.current?.click();
     }
   };
-  console.log(form.formState.errors)
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  
   return (
     <Form {...form}>
       <form

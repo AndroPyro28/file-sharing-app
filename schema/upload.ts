@@ -25,6 +25,7 @@ export const uploadSchema = z.object({
   }),
   title: z.string().min(2, { message: "Title is required" }),
   message: z.string().min(2, { message: "Message is required" }),
+  // files: z.any()
   files: z.array(FileSchema).min(1, "File required"),
 });
 
