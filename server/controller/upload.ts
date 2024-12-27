@@ -21,7 +21,8 @@ const upload = new Hono()
 
     const uploads = await Promise.all(
       files.map(async (file) => {
-        const buffer = await file.arrayBuffer();
+        // const buffer = await file.arrayBuffer();
+        const buffer = Buffer.from(await file.arrayBuffer());
         const imageId = createId();
         const mimetype = file.type;
         await uploadFile(buffer + "", imageId, mimetype);
