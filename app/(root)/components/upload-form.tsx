@@ -62,7 +62,14 @@ export const UploadForm = () => {
         "Content-Type": "multipart/form-data",
       },
     });
-    return response.data; // This assumes the API response contains `{ link: string }`
+
+    if(response.status === 201) {
+      alert("Files Successfull uploaded")
+    }
+    else {
+      alert("Something went wrong")
+    }
+    // This assumes the API response contains `{ link: string }`
   }
 
   const onClickTriggerInput = () => {

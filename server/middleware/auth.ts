@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { User } from '@prisma/client'
 import { createMiddleware } from 'hono/factory'
 export const authMiddleware = createMiddleware(async (c, next) => {
     const user = c.get("authUser")
@@ -18,3 +19,7 @@ export const authMiddleware = createMiddleware(async (c, next) => {
     }
     await next()
   })
+
+  export type TAuthVariables = {
+    user: User
+  }
