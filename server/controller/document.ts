@@ -24,6 +24,10 @@ const document = new Hono<{ Variables: TAuthVariables }>()
       const uploads = await Promise.all(
         files.map(async (file) => {
           const buffer = Buffer.from(await file.arrayBuffer());
+
+          // const arrayBuffer = await file.arrayBuffer();
+          // const buffer = new Uint8Array(arrayBuffer);
+
           const imageId = createId();
           const mimetype = file.type;
           try {

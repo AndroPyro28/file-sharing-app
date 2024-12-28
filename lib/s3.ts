@@ -15,10 +15,10 @@ const s3Client = new S3Client({
 })
 
 
-export function uploadFile(fileBuffer:Buffer, fileName:string, mimetype:string) {
+export function uploadFile(fileBuffer:Uint8Array | Buffer, fileName:string, mimetype:string) {
   const uploadParams = {
     Bucket: bucketName,
-    Body: fileBuffer + "",
+    Body: fileBuffer,
     Key: fileName,
     ContentType: mimetype.toLowerCase(), 
     ContentDisposition: 'attachment',  // This will trigger a download in the browser
