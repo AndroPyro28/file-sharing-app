@@ -21,9 +21,6 @@ const document = new Hono<{ Variables: TAuthVariables }>()
       const { emailTos, message, title, yourEmail } = c.req.valid("form");
       const { files } = c.req.valid("form");
       const user = c.get("user");
-      console.log("files", files)
-
-      
       const uploads = await Promise.all(
         files.map(async (file) => {
           const buffer = Buffer.from(await file.arrayBuffer());
@@ -47,9 +44,7 @@ const document = new Hono<{ Variables: TAuthVariables }>()
       const id = createId();
       const document = await prisma.document.create({
         data: {
-          id: id,
           email: yourEmail,
-          url: `/uploaded/${id}`,
           userId,
           isActive: true,
           files: {

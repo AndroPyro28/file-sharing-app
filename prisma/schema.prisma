@@ -43,7 +43,7 @@ model Document {
   id             String     @id @default(cuid())
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
-  url            String     @db.Text
+  // url            String     @db.Text
   user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   email          String     @db.Text
   userId         String
