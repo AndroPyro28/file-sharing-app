@@ -11,7 +11,7 @@ import Credentials from "@auth/core/providers/credentials";
 import { comparePassword } from "@/lib/bcrypt";
 import prisma from "@/lib/prisma";
 import { hc } from 'hono/client'
-import upload from "@/server/controller/upload";
+import document from "@/server/controller/document";
 import auth from "@/server/controller/auth";
 export const runtime = "nodejs";
 
@@ -88,7 +88,7 @@ app.use("/api/auth/*", authHandler());
 // app.use("/api/*", verifyAuth());
 
 const routes = app.basePath('/api')
-.route('/upload', upload)
+.route('/documents', document)
 .route("/auth-user", auth)
   // .route("/messages", messagesRoute)
   // .route("/users", usersRoute)

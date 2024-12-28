@@ -12,7 +12,7 @@ export const FileSchema = z
     `File size should be less than ${MAX_FILE_SIZE / 1024 / 1024}mb`
   );
 
-export const uploadSchema = z.object({
+export const documentSchema = z.object({
   emailTos: z
     .union([  // Allow both single string and array of strings
       z.string().email().min(1, { message: "Minimum of 1 email" }),
@@ -37,4 +37,4 @@ export const uploadSchema = z.object({
     ,
 });
 
-export type TUploadSchema = z.infer<typeof uploadSchema>;
+export type TDocumentSchema = z.infer<typeof documentSchema>;
