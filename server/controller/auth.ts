@@ -11,11 +11,12 @@ import { authMiddleware, TAuthVariables, } from "../middleware/auth";
 const auth = new Hono<{Variables: TAuthVariables}>()
 .use("*", authMiddleware)
 .get(
-  "/me",
+  "/",
   verifyAuth(),
   authMiddleware,
   async (c) => {
-    return c.json(c.get('user'))
+    // console.log("USER", c.get('user'))
+    return c.json({hello: 1})
   }
 )
 
@@ -30,11 +31,11 @@ const auth = new Hono<{Variables: TAuthVariables}>()
 
 export type TAuthRoutes = typeof auth;
 
-export const authClient = hc<TAuthRoutes>("/api/auth-user");
+export const authClient = hc<TAuthRoutes>("/auth-user");
 
-export type TGetMe = {
-  response: InferResponseType<typeof authClient.me.$get>;
-//   request: InferRequestType<typeof authClient.me.$post>["form"];
-};
+// export type TGetMe = {
+//   response: InferResponseType<typeof authClient.me.$get>;
+// //   request: InferRequestType<typeof authClient.me.$post>["form"];
+// };
 
 export default auth;

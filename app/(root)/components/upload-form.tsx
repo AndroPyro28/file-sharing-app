@@ -20,6 +20,7 @@ import { FolderPlus, PlusCircle } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { apiClient } from "@/hooks/useTanstackQuery";
+import { client } from "@/lib/hono";
 
 export const UploadForm = () => {
   const form = useForm<TDocumentSchema>({
@@ -46,7 +47,17 @@ export const UploadForm = () => {
   
     // Ensure 'files' is always treated as an array, even if there's only one file
     Array.from(values.files).forEach((file) => {
-      formData.append("files", file); // Same key for all files
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onload = (event:any) => {
+          // ArrayBuffer of the file content
+          const arrayBuffer = event.target.result;
+          console.log('File buffer:', new Uint8Array(arrayBuffer)); // Uint8Array is a buffer-friendly view
+          formData.append("files", arrayBuffer);
+        };
+        reader.onerror = (error) => {
+          console.error('Error reading file:', error);
+        };
     });
   
     // Ensure 'emailTos' is always treated as an array, even if there's only one email
@@ -81,6 +92,15 @@ export const UploadForm = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   
+  // const fetchUser = async () => {
+  //   const res = await client.api.me.$get()
+  //   const data = await res.json()
+  //   console.log(data)
+  // }
+
+  // useEffect(() => {
+  //   fetchUser()
+  // }, [])
   return (
     <Form {...form}>
       <form

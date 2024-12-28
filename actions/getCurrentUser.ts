@@ -9,7 +9,8 @@ import { client } from "@/lib/hono";
 export type GetCurrentUserType = Awaited<ReturnType<typeof getCurrentUser>>;
 export default async function getCurrentUser() {
   try {
-    const res = await client.api["auth-user"].me.$get()
+    const res = await client.api.me.$get()
+
     if(!res.ok) {
       throw new Error("User Not Found")
     }

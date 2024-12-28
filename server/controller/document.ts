@@ -21,6 +21,9 @@ const document = new Hono<{ Variables: TAuthVariables }>()
       const { emailTos, message, title, yourEmail } = c.req.valid("form");
       const { files } = c.req.valid("form");
       const user = c.get("user");
+      console.log("files", files)
+
+      
       const uploads = await Promise.all(
         files.map(async (file) => {
           const buffer = Buffer.from(await file.arrayBuffer());
