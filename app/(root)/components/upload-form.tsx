@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
-import { TDocumentSchema, documentSchema } from "@/schema/document";
+import { TUploadDocumentSchema, uploadDocumentSchema } from "@/schema/document";
 import { Textarea } from "@/components/ui/textarea";
 import { FolderPlus, PlusCircle } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
@@ -22,8 +22,8 @@ import axios from "axios";
 import { apiClient } from "@/hooks/useTanstackQuery";
 
 export const UploadForm = () => {
-  const form = useForm<TDocumentSchema>({
-    resolver: zodResolver(documentSchema),
+  const form = useForm<TUploadDocumentSchema>({
+    resolver: zodResolver(uploadDocumentSchema),
     defaultValues: {
       emailTos: [],
       files: [],
@@ -38,7 +38,7 @@ export const UploadForm = () => {
     setValue("");
   };
 
-  async function onSubmit(values: TDocumentSchema) {
+  async function onSubmit(values: TUploadDocumentSchema) {
     const formData = new FormData();
     formData.append("yourEmail", values.yourEmail);
     formData.append("title", values.title);

@@ -2,7 +2,7 @@
 
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { documentSchema } from "@/schema/document";
+import { uploadDocumentSchema } from "@/schema/document";
 import { uploadFile } from "@/lib/s3";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "@/lib/prisma";
@@ -15,8 +15,7 @@ const document = new Hono<{ Variables: TAuthVariables }>()
   .post(
     "/",
     verifyAuth(),
-    authMiddleware,
-    zValidator("form", documentSchema),
+    zValidator("form", uploadDocumentSchema),
     async (c) => {
       const { emailTos, message, title, yourEmail } = c.req.valid("form");
       const { files } = c.req.valid("form");
@@ -85,15 +84,36 @@ const document = new Hono<{ Variables: TAuthVariables }>()
         status: 201,
       });
     }
-  );
+  )
+  .get("/", verifyAuth(), async (c) => {
+    const user = c.get("user");
+    const userId = user?.id! as string;
+    const documents = await prisma.document.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return c.json(documents, {
+      status: 200,
+    });
+  }
+);
 
 export type TDocumentRoutes = typeof document;
 
 export const documentClient = hc<TDocumentRoutes>("/api/documents");
 
-export type TCreateLink = {
+export type TCreateDocument = {
   response: InferResponseType<typeof documentClient.index.$post>;
   request: InferRequestType<typeof documentClient.index.$post>["form"];
 };
+
+
+export type TGetDocuments = {
+  response: InferResponseType<typeof documentClient.index.$get>;
+  request: InferRequestType<typeof documentClient.index.$post>
+};
+
 
 export default document;
