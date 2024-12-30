@@ -10,6 +10,7 @@ import SignIn from "./components/signin";
 import { useSampleSocket } from "@/hooks/use-sample-socket";
 import UploadForm from "./components/upload-form";
 import SignOut from "./components/signout";
+import { View } from "./components/view";
 // import { TGetUser } from "@/server/controller/user";
 
 export default async function Home() {
@@ -36,9 +37,8 @@ export default async function Home() {
   return (
     <div className="overflow-hidden">
       <UploadForm />
-       {/* <SignIn /> */}
-      {/* <SignOut />  */}
-      <section className="z-5 fixed text-[##333333] top-[30%] left-[35%] w-[600px] flex flex-col gap-y-5 ">
+       <View />
+      <section className="z-30 fixed text-[##333333] top-[30%] left-[35%] w-[600px] flex flex-col gap-y-5 ">
         <h1 className="font-bold text-4xl text-shadow-custom">We Transfer Clone</h1>
         <p className="font-semibold leading-8 text-shadow-custom">
           Share files and folders effortlessly with We Transfer Clone—a secure,
