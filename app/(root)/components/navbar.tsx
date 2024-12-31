@@ -33,7 +33,7 @@ export const Navbar = () => {
                <ContactRound  className="size-4 mr-2" /> Contacts
             </div>
 
-            <div className="cursor-pointer flex items-center" onClick={() => onClickView('contacts')}>
+            <div className="cursor-pointer flex items-center" onClick={() => onClickView('shared-with-me')}>
                <Proportions  className="size-4 mr-2" /> Brands
             </div>
         </div>

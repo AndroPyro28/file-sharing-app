@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-export const ContactView = () => {
+export const SharedWithMe = () => {
   return (
     <motion.div
     className="h-full bg-white fixed z-40 right-0 top-0"
@@ -21,7 +21,7 @@ export const ContactView = () => {
       },
     }}
   >
-  Contact View
+  Share with me View
 </motion.div>
   );
 };

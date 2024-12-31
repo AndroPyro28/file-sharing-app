@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 export type activeType = 
   "transfers" |
-  "contacts"
+  "contacts" |
+  "shared-with-me"
 
 // you can extend this type if you have more modal
 
