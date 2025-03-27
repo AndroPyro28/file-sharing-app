@@ -1,4 +1,4 @@
-// controller/upload.ts
+// controller/document/index.ts
 
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
@@ -8,7 +8,7 @@ import { createId } from "@paralleldrive/cuid2";
 import prisma from "@/lib/prisma";
 import { verifyAuth } from "@hono/auth-js";
 import { hc, InferRequestType, InferResponseType } from "hono/client";
-import { authMiddleware, TAuthVariables } from "../middleware/auth";
+import { authMiddleware, TAuthVariables } from "../../middleware/auth";
 
 const document = new Hono<{ Variables: TAuthVariables }>()
   .use("*", authMiddleware)

@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { verifyAuth, getAuthUser, AuthUser,  } from "@hono/auth-js";
 import { hc, InferRequestType, InferResponseType } from "hono/client";
-import { authMiddleware, TAuthVariables, } from "../middleware/auth";
+import { authMiddleware, TAuthVariables, } from "../../middleware/auth";
 
 const auth = new Hono<{Variables: TAuthVariables}>()
 .use("*", authMiddleware)
@@ -19,7 +19,11 @@ const auth = new Hono<{Variables: TAuthVariables}>()
     return c.json({hello: 1})
   }
 )
-
+.post('/hello',
+  async (c) => {
+    return c.json({message: "Hello world"})
+  }
+)
 // .post(
 //   "/me",
 //   verifyAuth(),
