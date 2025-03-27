@@ -18,7 +18,7 @@ export const View = () => {
 
   console.log(views)
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" >
         {views[type ?? ""]}
     </AnimatePresence>
   );
